@@ -17,21 +17,27 @@ public class MeshGenerator : MonoBehaviour
         Create();
         UpdateShape();
     }
-   
+   /// <summary>
+   /// Mesh İçin Vertex Ve Ucgen Oluşturuyoruz.
+   /// </summary>
     void Create()
     {
+//Vertex Sayısını x eksenindeki kare sayısı + 1 * z eksenindeki kare sayısı +1 yaparak bulabiliriz
+      
         vertices = new Vector3[(xSize+1)*(zSize+1)];
         for (int i=0, z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float yPos = Mathf.PerlinNoise(x * .2f, z * .2f) * 2f;
-                vertices[i] = new Vector3(x,yPos,z);
+                //float yPos = Mathf.PerlinNoise(x * .2f, z * .2f) * 2f;
+                vertices[i] = new Vector3(x,0,z);
                 i++;
             }
         }
-
+        //Toplam kullanılacak üçgen sayısını ise x eksenindeki ve z eksenindeki kare sayısı
+        // ve 6'yı çarparak bulabiliyoruz.
         triangels = new int[xSize * zSize * 6];
+
         int vert = 0;
         int tria = 0;
 
@@ -50,10 +56,9 @@ public class MeshGenerator : MonoBehaviour
             }
             vert++;
         }
-       
-        
     }
- 
+
+   
     void UpdateShape()
     {
         mesh.Clear();
