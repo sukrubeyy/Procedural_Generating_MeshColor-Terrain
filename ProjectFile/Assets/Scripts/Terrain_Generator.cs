@@ -9,6 +9,7 @@ public class Terrain_Generator : MonoBehaviour
     public float scale = 20f;
     public float xOffset=100f;
     public float yOffset=100f;
+
     private void Start()
     {
         Terrain terrain = GetComponent<Terrain>();

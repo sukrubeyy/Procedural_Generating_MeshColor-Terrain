@@ -6,6 +6,7 @@ public class MeshGenerator : MonoBehaviour
 {
     Mesh mesh;
     Vector3[] vertices;
+    Vector2[] uvs;
     int[] triangels;
     public int xSize = 20;
     public int zSize = 20;
@@ -29,8 +30,8 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                //float yPos = Mathf.PerlinNoise(x * .2f, z * .2f) * 2f;
-                vertices[i] = new Vector3(x,0,z);
+                float yPos = Mathf.PerlinNoise(x * .2f, z * .2f) * 2f;
+                vertices[i] = new Vector3(x,yPos,z);
                 i++;
             }
         }
@@ -56,6 +57,20 @@ public class MeshGenerator : MonoBehaviour
             }
             vert++;
         }
+
+        //uvs = new Vector2[vertices.Length];
+
+        //for (int i = 0, z = 0; z <= zSize; z++)
+        //{
+        //    for (int x = 0; x <= xSize; x++)
+        //    {
+
+        //        uvs[i] = new Vector2((float)x / xSize, (float)z / zSize);
+        //        i++;
+        //    }
+        //}
+
+
     }
 
    
@@ -64,6 +79,7 @@ public class MeshGenerator : MonoBehaviour
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangels;
+        mesh.uv = uvs;
         mesh.RecalculateNormals();
     }
 }
