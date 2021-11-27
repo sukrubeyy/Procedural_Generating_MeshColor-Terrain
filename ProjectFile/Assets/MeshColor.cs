@@ -2,43 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeshGenerator : MonoBehaviour
+public class MeshColor : MonoBehaviour
 {
     Mesh mesh;
     Vector3[] vertices;
-    Vector2[] uvs;
-    //Color[] colors;
-   // public Gradient gradient;
+    Color[] colors;
+    public Gradient gradient;
     int[] triangels;
     public int xSize = 20;
     public int zSize = 20;
-
-    private void Start()
+    void Start()
     {
         mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
+        mesh = GetComponent<MeshFilter>().mesh;
         Create();
         UpdateShape();
     }
+
     private void Update()
     {
         Create();
         UpdateShape();
     }
-    /// <summary>
-    /// Mesh İçin Vertex Ve Ucgen Oluşturuyoruz.
-    /// </summary>
+
     void Create()
     {
-//Vertex Sayısını x eksenindeki kare sayısı + 1 * z eksenindeki kare sayısı +1 yaparak bulabiliriz
-      
-        vertices = new Vector3[(xSize+1)*(zSize+1)];
-        for (int i=0, z = 0; z <= zSize; z++)
+        //Vertex Sayısını x eksenindeki kare sayısı + 1 * z eksenindeki kare sayısı +1 yaparak bulabiliriz
+
+        vertices = new Vector3[(xSize + 1) * (zSize + 1)];
+        for (int i = 0, z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
             {
                 float yPos = Mathf.PerlinNoise(x * .2f, z * .2f) * 2f;
-                vertices[i] = new Vector3(x,yPos,z);
+                vertices[i] = new Vector3(x, yPos, z);
                 i++;
             }
         }
@@ -65,39 +62,27 @@ public class MeshGenerator : MonoBehaviour
             vert++;
         }
 
-        uvs = new Vector2[vertices.Length];
 
+        colors = new Color[vertices.Length];
         for (int i = 0, z = 0; z <= zSize; z++)
         {
             for (int x = 0; x <= xSize; x++)
             {
-
-                uvs[i] = new Vector2((float)x / xSize, (float)z / zSize);
+                float height = vertices[i].y;
+                colors[i] = gradient.Evaluate(height);
                 i++;
             }
         }
 
-        //colors = new Color[vertices.Length];
-        //for (int i = 0, z = 0; z <= zSize; z++)
-        //{
-        //    for (int x = 0; x <= xSize; x++)
-        //    {
-        //        float height = vertices[i].y;
-        //        colors[i] = gradient.Evaluate(height);
-        //        i++;
-        //    }
-        //}
-
     }
 
-   
     void UpdateShape()
     {
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangels;
-        mesh.uv = uvs;
-      //  mesh.colors = colors;
+        mesh.colors = colors;
         mesh.RecalculateNormals();
     }
+
 }
